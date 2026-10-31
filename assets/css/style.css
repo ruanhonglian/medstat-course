@@ -292,6 +292,40 @@ a:hover { color: var(--brand-2); }
 
 .video-player { width: 100%; border-radius: 10px; display: block; }
 
+/* ---------- 受限 / 申请下载 ---------- */
+.locked {
+  border: 1px dashed #f0c36a;
+  background: #fffbeb;
+  border-radius: 10px;
+  padding: 18px 20px;
+}
+.locked + .locked { margin-top: 14px; }
+.locked-main {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.locked-main .icon { font-size: 18px; }
+.locked-name { font-size: 15px; font-weight: 600; color: var(--ink); }
+.locked-badge {
+  font-size: 11px;
+  font-weight: 700;
+  color: #b45309;
+  background: #fef3c7;
+  padding: 3px 8px;
+  border-radius: 999px;
+  letter-spacing: .3px;
+  white-space: nowrap;
+}
+.request-note {
+  margin: 12px 0 0;
+  font-size: 13px;
+  color: var(--ink-2);
+}
+.locked-actions { margin-top: 12px; }
+.pdf-label .locked-badge { margin-left: auto; }
+
 .empty {
   color: var(--muted);
   font-size: 14px;

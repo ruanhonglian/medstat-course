@@ -20,16 +20,74 @@
     return /\.pdf(\?|$)/i.test(src || "");
   }
 
+  /* ---------- 下载开关相关 ---------- */
+  function getSettings() {
+    return window.SETTINGS || {};
+  }
+  function isLocked() {
+    return getSettings().allowDownload === false;
+  }
+  function mailtoRequest(label) {
+    var S = getSettings();
+    var email = S.requestEmail || "";
+    if (!email) return "";
+    var subject = "申请下载课件：《" + (label || "课件") + "》";
+    var body =
+      "老师您好，我想申请下载《" + (label || "课件") + "》的学习资料。\n\n姓名：\n学号：\n用途：";
+    return "mailto:" + email + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
+  }
+  function requestButton(label) {
+    var href = mailtoRequest(label);
+    if (!href) {
+      return '<span class="btn btn-primary" title="教师未设置邮箱">✉️ 申请下载</span>';
+    }
+    return '<a class="btn btn-primary" href="' + href + '">✉️ 申请下载</a>';
+  }
+  function lockedItem(icon, label) {
+    var S = getSettings();
+    var note = S.requestNote ? '<p class="request-note">' + esc(S.requestNote) + "</p>" : "";
+    return (
+      '<div class="locked">' +
+      '<div class="locked-main">' +
+      '<span class="icon">' + icon + "</span>" +
+      '<span class="locked-name">' + esc(label) + "</span>" +
+      '<span class="locked-badge">🔒 已限制下载</span>' +
+      "</div>" +
+      note +
+      '<div class="locked-actions">' + requestButton(label) + "</div>" +
+      "</div>"
+    );
+  }
+
   function renderSlides(slides) {
     if (!slides || !slides.length) {
       return '<div class="empty">课件待上传（把 PDF/PPTX 放进 assets/slides/ 并在 data/course.js 里登记）</div>';
     }
-    let html = "";
+    var S = getSettings();
+    var locked = isLocked();
+    var allowPreview = S.allowPreviewWhenLocked === true;
+    var html = "";
     slides.forEach(function (s) {
       // pdf：用于在线预览；src：下载文件（PPTX 或 PDF）
       var pdf = s.pdf || (isPdf(s.src) ? s.src : "");
       var dl = s.src || s.pdf || "";
       var label = s.label || "课件";
+
+      if (locked) {
+        if (pdf && allowPreview) {
+          // 可看不可下：只内嵌预览，不提供下载按钮
+          html +=
+            '<div class="pdf-wrap">' +
+            '<div class="pdf-label"><span class="icon">📄</span>' + esc(label) +
+            '<span class="locked-badge">🔒 仅预览</span></div>' +
+            '<iframe src="' + esc(pdf) + '" title="' + esc(label) + '"></iframe>' +
+            '<div class="pdf-actions">' + requestButton(label) + "</div></div>";
+        } else {
+          html += lockedItem("📄", label);
+        }
+        return;
+      }
+
       if (pdf) {
         html +=
           '<div class="pdf-wrap">' +
@@ -58,15 +116,21 @@
     if (!videos || !videos.length) {
       return '<div class="empty">视频待上传（放在西柚云服务器，链接填入 data/course.js）</div>';
     }
-    let html = "";
+    var locked = isLocked();
+    var html = "";
     videos.forEach(function (v) {
+      var label = v.label || "视频";
+      if (locked) {
+        html += lockedItem("🎬", label);
+        return;
+      }
       if (isVideo(v.src)) {
         html +=
           '<video class="video-player" controls preload="metadata" src="' + esc(v.src) + '"></video>';
       } else {
         html +=
           '<div class="item">' +
-          '<span class="item-name"><span class="icon">🎬</span>' + esc(v.label || "视频") + "</span>" +
+          '<span class="item-name"><span class="icon">🎬</span>' + esc(label) + "</span>" +
           '<a class="btn btn-primary" href="' + esc(v.src) + '" target="_blank">观看视频 ↗</a>' +
           "</div>";
       }
