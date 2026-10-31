@@ -112,9 +112,27 @@
     return html;
   }
 
+  // 生成 B 站内嵌播放地址（支持 { id:"BV..." } 或 src 里含 BV 号 / bilibili 链接）
+  function biliEmbedUrl(v) {
+    var bvid = String(v.bvid || v.id || "").trim();
+    if (!bvid && v.src) {
+      var m = String(v.src).match(/BV[0-9A-Za-z]{8,}/i);
+      if (m) bvid = m[0];
+    }
+    if (!bvid) return "";
+    var page = v.page || 1;
+    return (
+      "https://player.bilibili.com/player.html?bvid=" + encodeURIComponent(bvid) +
+      "&page=" + encodeURIComponent(page) + "&high_quality=1&danmaku=0&autoplay=0"
+    );
+  }
+
   function renderVideos(videos) {
     if (!videos || !videos.length) {
-      return '<div class="empty">视频待上传（放在西柚云服务器，链接填入 data/course.js）</div>';
+      return (
+        '<div class="empty">🎬 视频制作中，敬请期待。</div>' +
+        '<div class="empty hint">视频做好后：上传 B 站，把 BV 号填进 data/course.js 对应章节的 videos 里，即可在网页内嵌播放。</div>'
+      );
     }
     var locked = isLocked();
     var html = "";
@@ -124,14 +142,27 @@
         html += lockedItem("🎬", label);
         return;
       }
-      if (isVideo(v.src)) {
+      var bili = biliEmbedUrl(v);
+      if (bili) {
+        html +=
+          '<div class="bili-wrap">' +
+          '<div class="bili-label"><span class="icon">🎬</span>' + esc(label) + "</div>" +
+          '<div class="bili-frame"><iframe src="' + esc(bili) + '" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"></iframe></div>' +
+          "</div>";
+      } else if (isVideo(v.src)) {
         html +=
           '<video class="video-player" controls preload="metadata" src="' + esc(v.src) + '"></video>';
-      } else {
+      } else if (v.src) {
         html +=
           '<div class="item">' +
           '<span class="item-name"><span class="icon">🎬</span>' + esc(label) + "</span>" +
           '<a class="btn btn-primary" href="' + esc(v.src) + '" target="_blank">观看视频 ↗</a>' +
+          "</div>";
+      } else {
+        html +=
+          '<div class="item">' +
+          '<span class="item-name"><span class="icon">🎬</span>' + esc(label) + "</span>" +
+          '<span class="empty" style="padding:0">待上传</span>' +
           "</div>";
       }
     });

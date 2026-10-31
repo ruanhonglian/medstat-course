@@ -13,10 +13,16 @@
         { label: 显示名, pdf: PDF预览路径, src: 下载文件路径 }
         pdf 以 .pdf 结尾 → 内嵌在线预览；
         src 以 .pptx/.docx 结尾 → 提供下载（一般放 PPTX 原文件）
-   - videos   视频数组：
-        { label: 显示名, src: 视频地址 }
-        src 以 .mp4/.webm 结尾 → 内嵌播放器；
-        否则（如西柚云外链、B站链接）→ "观看视频" 按钮
+   - videos   视频数组（方案A：B 站托管，视频做好后填这里）：
+        内嵌 B 站播放器（推荐，免费、不占服务器、可设禁止下载）：
+            { label: "第1讲", platform: "bilibili", id: "BV1xxxxxx", page: 1 }
+        也可以直接给 B 站链接，自动识别 BV 号：
+            { label: "第1讲", src: "https://www.bilibili.com/video/BV1xxxxxx" }
+        或放自己的 mp4 文件：
+            { label: "第1讲", src: "https://.../xxx.mp4" }  → 内嵌 <video>
+        或任意外链：
+            { label: "第1讲", src: "https://..." }          → “观看视频”按钮
+        （videos 留空 [] 时，页面会显示“视频制作中，敬请期待”占位）
    - summary  章节详情页顶部的简介（可选）
 
    上传课件：把 PDF/PPTX 文件放进 assets/slides/ 目录，
@@ -59,7 +65,10 @@ window.COURSE = {
         { label: "绪论（药学）", pdf: "assets/slides/01-绪论-药学.pdf", src: "assets/slides/01-绪论-药学.pptx" },
         { label: "绪论（研究生）", pdf: "assets/slides/01-绪论-研究生.pdf", src: "assets/slides/01-绪论-研究生.pptx" }
       ],
-      videos: [],
+      videos: [
+        // 示例（视频做好后取消注释、替换 BV 号即可上线）：
+        // { label: "绪论 · 第1讲", platform: "bilibili", id: "BV1xxxxxxxx" }
+      ],
       summary: "介绍医学统计学的定义、作用、基本概念（总体与样本、同质与变异、变量类型、概率等）以及统计工作的基本步骤，为后续学习奠定概念基础。"
     },
     {
