@@ -39,7 +39,7 @@
 window.SETTINGS = {
   allowDownload: true,                 // true=开放下载；false=关闭下载
   allowPreviewWhenLocked: false,       // 关闭下载时是否还允许在线预览
-  requestEmail: "your-email@example.com",   // ← 改成你的邮箱
+  requestEmail: "ruanhl@163.com",   // ← 你的邮箱
   requestNote: "如需下载课件，请发送邮件申请，注明姓名、学号和所需章节，审核后回复。"
 };
 
