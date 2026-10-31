@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="医学统计学课程学习资料：各章节课件与视频">
+  <title>医学统计学 · Medical Statistics</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo">📊</span>
+      <span id="brand-title">医学统计学</span>
+      <span class="brand-en">Medical Statistics</span>
+    </div>
+    <nav class="topnav">
+      <a href="index.html" class="active">学习</a>
+      <a href="#dashboard">章节</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <span class="eyebrow">LEARNING PHASE</span>
+    <h1 id="hero-title">医学统计学</h1>
+    <p class="hero-sub">系统掌握医学研究中的数据分析方法。</p>
+    <span class="hero-stat">0 个章节</span>
+  </section>
+
+  <main id="dashboard" class="container"></main>
+
+  <footer>
+    <div>📊 医学统计学 · Medical Statistics</div>
+    <div>课件与视频持续更新中 · 由 <a href="https://pages.github.com" target="_blank">GitHub Pages</a> 托管</div>
+  </footer>
+
+  <script src="data/course.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script>
+    // 用配置里的标题覆盖页面默认标题
+    if (window.COURSE && COURSE.title) {
+      document.getElementById('brand-title').textContent = COURSE.title;
+      document.getElementById('hero-title').textContent = COURSE.title;
+      document.title = COURSE.title + ' · ' + (COURSE.en || 'Medical Statistics');
+    }
+  </script>
+</body>
+</html>

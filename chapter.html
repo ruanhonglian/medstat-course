@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>章节 · 医学统计学</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo">📊</span>
+      <span id="brand-title">医学统计学</span>
+      <span class="brand-en">Medical Statistics</span>
+    </div>
+    <nav class="topnav">
+      <a href="index.html">学习</a>
+    </nav>
+  </header>
+
+  <div id="chapter" class="chapter-wrap"></div>
+
+  <footer>
+    <div>📊 医学统计学 · Medical Statistics</div>
+  </footer>
+
+  <script src="data/course.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script>
+    if (window.COURSE && COURSE.title) {
+      document.getElementById('brand-title').textContent = COURSE.title;
+    }
+  </script>
+</body>
+</html>
