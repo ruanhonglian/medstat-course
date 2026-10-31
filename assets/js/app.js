@@ -26,18 +26,28 @@
     }
     let html = "";
     slides.forEach(function (s) {
-      if (isPdf(s.src)) {
+      // pdf：用于在线预览；src：下载文件（PPTX 或 PDF）
+      var pdf = s.pdf || (isPdf(s.src) ? s.src : "");
+      var dl = s.src || s.pdf || "";
+      var label = s.label || "课件";
+      if (pdf) {
         html +=
           '<div class="pdf-wrap">' +
-          '<iframe src="' + esc(s.src) + '" title="' + esc(s.label || "课件") + '"></iframe>' +
-          '<div class="pdf-actions"><a class="btn btn-primary" href="' + esc(s.src) + '" target="_blank">在新窗口打开</a>' +
-          '<a class="btn btn-ghost" href="' + esc(s.src) + '" download>下载 PDF</a></div>' +
-          "</div>";
+          '<div class="pdf-label"><span class="icon">📄</span>' + esc(label) + "</div>" +
+          '<iframe src="' + esc(pdf) + '" title="' + esc(label) + '"></iframe>' +
+          '<div class="pdf-actions">' +
+          '<a class="btn btn-primary" href="' + esc(pdf) + '" target="_blank">在新窗口打开</a>';
+        if (dl && dl !== pdf) {
+          html += '<a class="btn btn-ghost" href="' + esc(dl) + '" download>下载 PPTX</a>';
+        } else if (dl) {
+          html += '<a class="btn btn-ghost" href="' + esc(dl) + '" download>下载 PDF</a>';
+        }
+        html += "</div></div>";
       } else {
         html +=
           '<div class="item">' +
-          '<span class="item-name"><span class="icon">📄</span>' + esc(s.label || "课件") + "</span>" +
-          '<a class="btn btn-primary" href="' + esc(s.src) + '" download>下载</a>' +
+          '<span class="item-name"><span class="icon">📄</span>' + esc(label) + "</span>" +
+          '<a class="btn btn-primary" href="' + esc(dl) + '" download>下载</a>' +
           "</div>";
       }
     });

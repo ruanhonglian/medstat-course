@@ -43,13 +43,30 @@ medstat-course/
   subtitle: "分类资料的统计推断",           // 卡片上的一句话引言
   summary: "本章介绍四格表与卡方检验……",   // 详情页简介
   slides: [
-    { label: "课件（PDF）",  src: "assets/slides/ch04.pdf"  },
-    { label: "课件（PPTX）", src: "assets/slides/ch04.pptx" }
+    { label: "课件（PPTX，可下载）", pdf: "assets/slides/ch04.pdf", src: "assets/slides/ch04.pptx" }
   ],
   videos: [
     { label: "课程视频", src: "https://你的西柚云地址/ch04.mp4" }
   ]
 }
+```
+
+> `pdf` 用于网页内嵌预览，`src` 用于下载（一般放 PPTX 原文件）。
+
+### 附：PPTX 转 PDF（Mac 上用 Keynote）
+
+如果只有 PPTX 没有 PDF，可在 Mac 上用 Keynote 批量转：
+
+```bash
+cd ~/medstat-course/assets/slides
+for f in *.pptx; do
+  osascript -e "tell application \"Keynote\"" \
+    -e "set d to open POSIX file \"$(pwd)/$f\"" \
+    -e "delay 2" \
+    -e "export d to POSIX file \"$(pwd)/${f%.pptx}.pdf\" as PDF" \
+    -e "close d saving no" \
+    -e "end tell"
+done
 ```
 
 ### 3. 提交并推送
