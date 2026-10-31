@@ -43,8 +43,8 @@
    requestNote：申请页面显示给学生的提示文字（可留空）
    ============================================================ */
 window.SETTINGS = {
-  allowDownload: true,                 // true=开放下载；false=关闭下载
-  allowPreviewWhenLocked: false,       // 关闭下载时是否还允许在线预览
+  allowDownload: false,                // true=开放下载；false=关闭下载
+  allowPreviewWhenLocked: true,        // 关闭下载时是否还允许在线预览
   requestEmail: "ruanhl@163.com",   // ← 你的邮箱
   requestNote: "如需下载课件，请发送邮件申请，注明姓名、学号和所需章节，审核后回复。"
 };
